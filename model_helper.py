@@ -1,8 +1,10 @@
 import torch
 import torch.nn as nn
-from torchvision import transforms
 from PIL import Image
+from torchvision import transforms
+import streamlit as st
 
+<<<<<<< HEAD
 # Replace with your actual model definition
 class VehicleModel(nn.Module):
     def __init__(self):
@@ -18,18 +20,37 @@ class VehicleModel(nn.Module):
 
 # Load model on CPU
 def load_model(model_path="model/saved_model.pth"):
+=======
+
+# Dummy example model; replace with actual model definition
+class VehicleModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        # Add your layers here
+
+    def forward(self, x):
+        return x  # dummy
+
+
+# Load model once and cache it
+@st.cache_resource
+def load_model():
+>>>>>>> backup_before_upload_fix
     model = VehicleModel()
-    try:
-        model.load_state_dict(torch.load(model_path, map_location=torch.device("cpu")))
-        model.eval()
-        return model
-    except Exception as e:
-        raise RuntimeError(f"Failed to load model: {e}")
+    model.load_state_dict(torch.load("model/saved_model.pth", map_location="cpu"))
+    model.eval()
+    return model
+
+
+model = load_model()
+
 
 # Preprocessing and prediction
 def predict(image_path):
-    model = load_model()
+    # Load image
+    image = Image.open(image_path).convert("RGB")
 
+<<<<<<< HEAD
     # Define preprocessing
     preprocess = transforms.Compose([
         transforms.Resize((224, 224)),   # Resize to model input
@@ -46,6 +67,22 @@ def predict(image_path):
     with torch.no_grad():
         outputs = model(image_tensor)
         predicted_class = torch.argmax(outputs, dim=1).item()
+=======
+    # Add preprocessing
+    transform = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor()
+    ])
+    tensor = transform(image).unsqueeze(0)  # Add batch dimension
+
+    # Run model
+    with torch.no_grad():
+        output = model(tensor)
+
+    # Dummy class for now; replace with real class prediction
+    return "dummy_class"
+
+>>>>>>> backup_before_upload_fix
 
     # Map class index to label (replace with your real classes)
     classes = ["minor_damage", "moderate_damage", "severe_damage"]

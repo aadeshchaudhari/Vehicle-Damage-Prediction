@@ -11,7 +11,7 @@ if uploaded_file:
     # Save the uploaded image to a temporary file
     with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp_file:
         tmp_file.write(uploaded_file.getbuffer())
-        tmp_path = tmp_file.name
+        tmp_path = tmp_file.name  # path to use for prediction
 
     # Display uploaded image
     image = Image.open(tmp_path)

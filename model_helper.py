@@ -1,47 +1,18 @@
 import os
 import torch
-import torch.nn as nn
-from torchvision import models, transforms
 from PIL import Image
+from torchvision import transforms
 
-# Relative path to model folder
+# Relative path to model
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "model", "saved_model.pth")
 
-# Define your model architecture
-class VehicleModel(nn.Module):
-    def __init__(self, num_classes=3):
-        super().__init__()
-        self.model = models.resnet34(pretrained=False)
-        self.model.fc = nn.Linear(self.model.fc.in_features, num_classes)
-
-    def forward(self, x):
-        return self.model(x)
-
-# Robust model loading
+# Load full model directly
 def load_model(model_path=MODEL_PATH):
-    checkpoint = torch.load(model_path, map_location="cpu")
-
-    if isinstance(checkpoint, nn.Module):
-        # full model saved
-        model = checkpoint
-    elif isinstance(checkpoint, dict):
-        model = VehicleModel()
-        if "model_state_dict" in checkpoint:
-            model.load_state_dict(checkpoint["model_state_dict"])
-        else:
-            try:
-                model.load_state_dict(checkpoint)
-            except RuntimeError:
-                # fallback: filter only matching keys
-                filtered = {k: v for k, v in checkpoint.items() if k in model.state_dict()}
-                model.load_state_dict(filtered, strict=False)
-    else:
-        raise ValueError("Unsupported checkpoint format")
-
+    model = torch.load(model_path, map_location="cpu")
     model.eval()
     return model
 
-# Load model once at startup
+# Load once at startup
 model = load_model()
 
 # Prediction function

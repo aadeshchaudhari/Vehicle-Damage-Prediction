@@ -18,3 +18,4 @@ if uploaded_file:
         st.info(f"Predicted Class: **{prediction}**")
     except Exception as e:
         st.error(f"Prediction failed: {e}")
+

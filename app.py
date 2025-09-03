@@ -19,3 +19,4 @@ if uploaded_file:
     prediction = predict(tmp_path)
     st.info(f"Predicted Class: **{prediction}**")
 
+

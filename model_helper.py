@@ -46,3 +46,4 @@ def predict(image_path):
     # Dummy class for now; replace with real class prediction
     return "dummy_class"
 
+

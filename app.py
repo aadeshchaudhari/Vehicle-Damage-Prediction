@@ -4,11 +4,10 @@ import tempfile
 
 st.title("Vehicle Damage Detection")
 
-# File uploader
 uploaded_file = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
 
 if uploaded_file:
-    # Save uploaded file to a temporary location
+    # Save uploaded file to a temporary file
     with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp_file:
         tmp_file.write(uploaded_file.getbuffer())
         tmp_path = tmp_file.name

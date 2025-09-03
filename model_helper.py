@@ -3,18 +3,20 @@ import torch.nn as nn
 from torchvision import transforms
 from PIL import Image
 
-# Example model class (replace this with your actual model structure)
+# Replace with your actual model definition
 class VehicleModel(nn.Module):
     def __init__(self):
         super().__init__()
-        # Dummy example: 4 output classes
-        self.fc = nn.Linear(3 * 224 * 224, 4)
+        # Example: simple linear layer (replace with your real model)
+        self.flatten = nn.Flatten()
+        self.fc = nn.Linear(3*224*224, 3)  # Example: 3 classes
 
     def forward(self, x):
-        x = x.view(x.size(0), -1)  # flatten
-        return self.fc(x)
+        x = self.flatten(x)
+        x = self.fc(x)
+        return x
 
-# Load model
+# Load model on CPU
 def load_model(model_path="model/saved_model.pth"):
     model = VehicleModel()
     try:
@@ -24,24 +26,27 @@ def load_model(model_path="model/saved_model.pth"):
     except Exception as e:
         raise RuntimeError(f"Failed to load model: {e}")
 
-# Predict function
+# Preprocessing and prediction
 def predict(image_path):
     model = load_model()
 
-    # Preprocess image
-    transform = transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor()
+    # Define preprocessing
+    preprocess = transforms.Compose([
+        transforms.Resize((224, 224)),   # Resize to model input
+        transforms.ToTensor(),           # Convert to tensor
+        transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                             std=[0.229, 0.224, 0.225])
     ])
+
+    # Load image
     image = Image.open(image_path).convert("RGB")
-    image_tensor = transform(image).unsqueeze(0)  # add batch dimension
+    image_tensor = preprocess(image).unsqueeze(0)  # Add batch dimension
 
-    # Run prediction
+    # Forward pass
     with torch.no_grad():
-        output = model(image_tensor)
-        predicted_class = torch.argmax(output, dim=1).item()
+        outputs = model(image_tensor)
+        predicted_class = torch.argmax(outputs, dim=1).item()
 
-    # Map numeric class to human-readable labels
-    class_labels = {0: "No Damage", 1: "Minor Damage", 2: "Moderate Damage", 3: "Severe Damage"}
-    return class_labels.get(predicted_class, "Unknown")
-
+    # Map class index to label (replace with your real classes)
+    classes = ["minor_damage", "moderate_damage", "severe_damage"]
+    return classes[predicted_class]

@@ -4,7 +4,9 @@ from torchvision import models, transforms
 from PIL import Image
 
 # Absolute Windows path for Git Bash
-MODEL_PATH = r"E:\Code\Resources_StreamLit_App\Download files\model\saved_model.pth"
+import os
+
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "model", "saved_model.pth")
 
 # Define model architecture
 class VehicleModel(nn.Module):

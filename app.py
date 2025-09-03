@@ -11,11 +11,6 @@ if uploaded_file:
         tmp_file.write(uploaded_file.getbuffer())
         tmp_path = tmp_file.name
 
-    st.image(uploaded_file, caption="Uploaded Image", use_container_width=True)
-
-    try:
-        prediction = predict(tmp_path)
-        st.info(f"Predicted Class: **{prediction}**")
-    except Exception as e:
-        st.error(f"Prediction failed: {e}")
-
+    st.image(uploaded_file, caption="Uploaded File", use_container_width=True)
+    prediction = predict(tmp_path)
+    st.info(f"Predicted Class: **{prediction}**")

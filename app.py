@@ -14,6 +14,7 @@ if uploaded_file:
 
     try:
         prediction = predict(image_path)
-        st.info(f"Predicted Class: **{prediction}**")
+        st.success(f"Predicted Class: **{prediction}**")
     except Exception as e:
-        st.error(f"⚠️ Error during prediction: {e}")
+        st.error(f"Prediction failed: {e}")
+        st.stop()

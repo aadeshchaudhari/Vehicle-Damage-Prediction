@@ -4,10 +4,9 @@ import torch.nn as nn
 from torchvision import models, transforms
 from PIL import Image
 
-# Relative path for the model inside your repo
+# Relative path to model folder
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "model", "saved_model.pth")
 
-# Define model architecture
 class VehicleModel(nn.Module):
     def __init__(self, num_classes=3):
         super().__init__()
@@ -17,7 +16,6 @@ class VehicleModel(nn.Module):
     def forward(self, x):
         return self.model(x)
 
-# Robust model loading
 def load_model(model_path=MODEL_PATH):
     checkpoint = torch.load(model_path, map_location="cpu")
 
@@ -36,10 +34,8 @@ def load_model(model_path=MODEL_PATH):
     model.eval()
     return model
 
-# Load model once
 model = load_model()
 
-# Prediction function
 def predict(image_path):
     image = Image.open(image_path).convert("RGB")
     preprocess = transforms.Compose([

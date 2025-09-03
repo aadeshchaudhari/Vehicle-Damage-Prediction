@@ -1,47 +1,48 @@
 import torch
 import torch.nn as nn
-from torchvision import transforms
 from PIL import Image
+from torchvision import transforms
+import streamlit as st
 
-# Example model class (replace this with your actual model structure)
+
+# Dummy example model; replace with actual model definition
 class VehicleModel(nn.Module):
     def __init__(self):
         super().__init__()
-        # Dummy example: 4 output classes
-        self.fc = nn.Linear(3 * 224 * 224, 4)
+        # Add your layers here
 
     def forward(self, x):
-        x = x.view(x.size(0), -1)  # flatten
-        return self.fc(x)
+        return x  # dummy
 
-# Load model
-def load_model(model_path="model/saved_model.pth"):
+
+# Load model once and cache it
+@st.cache_resource
+def load_model():
     model = VehicleModel()
-    try:
-        model.load_state_dict(torch.load(model_path, map_location=torch.device("cpu")))
-        model.eval()
-        return model
-    except Exception as e:
-        raise RuntimeError(f"Failed to load model: {e}")
+    model.load_state_dict(torch.load("model/saved_model.pth", map_location="cpu"))
+    model.eval()
+    return model
+
+
+model = load_model()
+
 
 # Predict function
 def predict(image_path):
-    model = load_model()
+    # Load image
+    image = Image.open(image_path).convert("RGB")
 
-    # Preprocess image
+    # Add preprocessing
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor()
     ])
-    image = Image.open(image_path).convert("RGB")
-    image_tensor = transform(image).unsqueeze(0)  # add batch dimension
+    tensor = transform(image).unsqueeze(0)  # Add batch dimension
 
-    # Run prediction
+    # Run model
     with torch.no_grad():
-        output = model(image_tensor)
-        predicted_class = torch.argmax(output, dim=1).item()
+        output = model(tensor)
 
-    # Map numeric class to human-readable labels
-    class_labels = {0: "No Damage", 1: "Minor Damage", 2: "Moderate Damage", 3: "Severe Damage"}
-    return class_labels.get(predicted_class, "Unknown")
+    # Dummy class for now; replace with real class prediction
+    return "dummy_class"
 

@@ -1,9 +1,8 @@
 import os
 import torch
 import torch.nn as nn
-from torchvision import models
+from torchvision import models, transforms
 from PIL import Image
-from torchvision import transforms
 
 # Model path
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "model", "saved_model.pth")
@@ -18,13 +17,25 @@ class VehicleModel(nn.Module):
     def forward(self, x):
         return self.model(x)
 
-# Load model
+# Load model safely
 def load_model(model_path=MODEL_PATH):
-    model = VehicleModel()
-    model.load_state_dict(torch.load(model_path, map_location="cpu"))
+    try:
+        # Try loading as state_dict
+        model = VehicleModel()
+        checkpoint = torch.load(model_path, map_location="cpu")
+        if isinstance(checkpoint, dict) and "model" not in checkpoint:
+            # assume it is state_dict
+            model.load_state_dict(checkpoint)
+        else:
+            # fallback to full model
+            model = torch.load(model_path, map_location="cpu")
+    except RuntimeError:
+        # fallback to full model if keys mismatch
+        model = torch.load(model_path, map_location="cpu")
     model.eval()
     return model
 
+# Load the model once
 model = load_model()
 
 # Prediction function

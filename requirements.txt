@@ -1,4 +1,6 @@
 streamlit==1.43.1
 torch==2.8.0
-torchvision==0.15.2
+torchvision==0.15.3
 Pillow==11.1.0
+numpy==1.24.6
+pandas==2.3.2

@@ -48,7 +48,7 @@ Run the Streamlit app:
 ### Tech Stack
 - Python
 - Scikit-learn
-- - PyTorch
+- PyTorch
 - Convolutional Neural Network
 
 

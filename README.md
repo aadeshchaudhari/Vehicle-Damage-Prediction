@@ -45,7 +45,7 @@ Run the Streamlit app:
 bash
 streamlit run app.py
 
-Tech Stack
+### Tech Stack
 - Python
 
 - PyTorch
@@ -56,5 +56,5 @@ Tech Stack
 
 - Optuna (hyperparameter optimization)
 
-Usage
+### Usage
 Upload a third-quarter front or rear view image of a vehicle. The model will analyze and classify the damage type.

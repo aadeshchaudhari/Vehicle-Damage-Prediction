@@ -37,13 +37,13 @@ This optimization improved model stability and maintained consistent validation 
 Setup
 Install dependencies:
 
-bash
 pip install -r requirements.txt
+
 
 Run the Streamlit app:
 
-bash
 streamlit run app.py
+
 
 ### Tech Stack
 - Python

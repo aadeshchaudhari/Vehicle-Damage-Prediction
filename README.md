@@ -29,9 +29,9 @@ Validation accuracy: 80%
 Hyperparameter Optimization
 Optuna was used for automated hyperparameter tuning with 20 trials, resulting in:
 
-Learning rate: 0.0019
+- Learning rate: 0.0019
 
-Dropout: 0.44
+- Dropout: 0.44
 
 This optimization improved model stability and maintained consistent validation performance.
 Setup
@@ -46,15 +46,15 @@ bash
 streamlit run app.py
 
 Tech Stack
-Python
+- Python
 
-PyTorch
+- PyTorch
 
-Streamlit
+- Streamlit
 
-ResNet50 (pretrained)
+- ResNet50 (pretrained)
 
-Optuna (hyperparameter optimization)
+- Optuna (hyperparameter optimization)
 
 Usage
 Upload a third-quarter front or rear view image of a vehicle. The model will analyze and classify the damage type.

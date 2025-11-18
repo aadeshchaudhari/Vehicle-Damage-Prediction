@@ -34,14 +34,13 @@ Optuna was used for automated hyperparameter tuning with 20 trials, resulting in
 - Dropout: 0.44
 
 This optimization improved model stability and maintained consistent validation performance.
-Setup
 Install dependencies:
 
+bash
 pip install -r requirements.txt
-
-
 Run the Streamlit app:
 
+bash
 streamlit run app.py
 
 
